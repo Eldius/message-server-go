@@ -15,10 +15,10 @@ func TestNewCredential(t *testing.T) {
 		t.Error("Failed to create a credential c1\n", err.Error())
 	}
 
-	if c0.Salt == c1.Salt {
+	if string(c0.Salt) == string(c1.Salt) {
 		t.Errorf("Failed to create different salts for c0 and c1:\nc0: %s\nc1:%s", c0.Salt, c1.Salt)
 	}
-	if c0.Hash == c1.Hash {
+	if string(c0.Hash) == string(c1.Hash) {
 		t.Errorf("Failed to create different hashs for c0 and c1:\nc0: %s\nc1:%s", c0.Hash, c1.Hash)
 	}
 }
