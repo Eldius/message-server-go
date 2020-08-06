@@ -23,6 +23,7 @@ type CredentialInfo struct {
 	Hash   []byte `gorm:"not null"`
 	Salt   []byte `gorm:"not null"`
 	Active bool
+	Admin  bool
 }
 
 /*
