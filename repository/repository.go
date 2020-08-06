@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	// I need this
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 

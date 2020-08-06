@@ -20,8 +20,8 @@ CredentialInfo represents the user credentials
 type CredentialInfo struct {
 	ID     int    `gorm:"AUTO_INCREMENT;PRIMARY_KEY"`
 	User   string `gorm:"unique;not null;UNIQUE_INDEX"`
-	Hash   string `gorm:"not null"`
-	Salt   string `gorm:"not null"`
+	Hash   []byte `gorm:"not null"`
+	Salt   []byte `gorm:"not null"`
 	Active bool
 }
 
@@ -48,8 +48,8 @@ func NewCredentials(user string, pass string) (cred CredentialInfo, err error) {
 	}
 	cred = CredentialInfo{
 		User:   user,
-		Salt:   string(salt),
-		Hash:   string(hash),
+		Salt:   salt,
+		Hash:   hash,
 		Active: true,
 	}
 

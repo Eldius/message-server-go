@@ -18,6 +18,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 
@@ -74,8 +75,8 @@ func initConfig() {
 		}
 
 		// Search config in home directory with name ".auth-server-go" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".auth-server-go")
+		viper.AddConfigPath(filepath.Join(home, ".auth-server-go"))
+		viper.SetConfigName("auth-server")
 		viper.SetConfigType("yml")
 	}
 
