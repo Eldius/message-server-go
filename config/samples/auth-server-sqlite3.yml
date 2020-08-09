@@ -1,0 +1,5 @@
+---
+app:
+  database:
+    url: '/workspace/auth-server.db'
+    engine: 'sqlite3'
