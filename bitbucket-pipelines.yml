@@ -4,4 +4,4 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
-          - go test -v
+          - go test -v ./...
