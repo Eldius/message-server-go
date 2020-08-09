@@ -35,11 +35,11 @@ func TestSalt(t *testing.T) {
 }
 
 func TestHash(t *testing.T) {
-	h0, err := hash("ABC123", []byte("DEF456"))
+	h0, err := Hash("ABC123", []byte("DEF456"))
 	if err != nil {
 		t.Error(err)
 	}
-	h1, err := hash("ABC123", []byte("DEF456"))
+	h1, err := Hash("ABC123", []byte("DEF456"))
 	if err != nil {
 		t.Error(err)
 	}
