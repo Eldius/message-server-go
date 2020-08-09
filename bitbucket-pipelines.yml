@@ -1,0 +1,7 @@
+image: golang:1.14
+
+pipelines:
+  default:
+    - step:
+        script: # Modify the commands below to build your repository.
+          - go test -v
