@@ -17,7 +17,7 @@ var (
 	tmpDir string
 )
 
-func init()  {
+func init() {
 	//viper.SetConfigFile("../config/samples/auth-server-sqlite3.yml")
 	var err error
 	tmpDir, err = ioutil.TempDir("", "auth-server")
@@ -37,7 +37,7 @@ func init()  {
 	}
 }
 
-func TestValidatePass(t *testing.T)  {
+func TestValidatePass(t *testing.T) {
 	username := "user"
 	passwd := "pass"
 	u, err := user.NewCredentials(username, passwd)
@@ -50,7 +50,6 @@ func TestValidatePass(t *testing.T)  {
 	//au := repository.ListUSers()
 	//log.Println("au", au)
 
-
 	c, err := ValidatePass(username, passwd)
 	if err != nil {
 		t.Error(err)
@@ -62,7 +61,7 @@ func TestValidatePass(t *testing.T)  {
 
 }
 
-func TestValidatePassInvalidCredentials(t *testing.T)  {
+func TestValidatePassInvalidCredentials(t *testing.T) {
 	username := "user1"
 	passwd := "pass1"
 	u, err := user.NewCredentials(username, passwd)
@@ -74,7 +73,6 @@ func TestValidatePassInvalidCredentials(t *testing.T)  {
 
 	//au := repository.ListUSers()
 	//log.Println("au", au)
-
 
 	c, err := ValidatePass(username, "pass")
 	if err != nil {
