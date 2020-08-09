@@ -43,7 +43,7 @@ func NewCredentials(user string, pass string) (cred CredentialInfo, err error) {
 	h := sha512.New()
 	h.Write([]byte(pass))
 	salt := salt()
-	hash, err := hash(pass, salt)
+	hash, err := Hash(pass, salt)
 	if err != nil {
 		return
 	}
@@ -67,7 +67,8 @@ func salt() []byte {
 	return salt
 }
 
-func hash(pass string, salt []byte) (hash []byte, err error) {
+// Hash returns the user pass' hash
+func Hash(pass string, salt []byte) (hash []byte, err error) {
 	hash, err = scrypt.Key([]byte(pass), salt, 1<<14, 8, 1, _pwHashBytes)
 	if err != nil {
 		log.Fatal(err)

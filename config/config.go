@@ -11,3 +11,8 @@ func GetDBURL() string {
 func GetDBEngine() string {
 	return viper.GetString("app.database.engine")
 }
+
+// GetDBLogQueries enable query log info
+func GetDBLogQueries() bool {
+	return viper.GetBool("app.database.log")
+}

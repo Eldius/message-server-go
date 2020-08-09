@@ -1,15 +1,29 @@
 package auth
 
 import (
+	"fmt"
+
 	"github.com/Eldius/auth-server-go/repository"
 	"github.com/Eldius/auth-server-go/user"
-	u "github.com/Eldius/auth-server-go/user"
 )
 
 // ValidatePass validates user credentials
-func ValidatePass(user string, pass string) *user.CredentialInfo {
-	var usr u.CredentialInfo
-	repository.GetDB().Where("User = ?", user).First(&usr)
+func ValidatePass(username string, pass string) (u *user.CredentialInfo, err error) {
+	var usr = repository.FindUser(username)
+	if usr == nil {
+		err = fmt.Errorf("Failed to find user")
+		return
+	}
 
-	return &usr
+	var ph []byte
+	ph, err = user.Hash(pass, usr.Salt)
+	if err != nil {
+		return
+	}
+
+	if string(ph) == string(usr.Hash) {
+		u = usr
+	}
+
+	return
 }
