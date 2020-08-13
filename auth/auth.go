@@ -10,7 +10,7 @@ import (
 // ValidatePass validates user credentials
 func ValidatePass(username string, pass string) (u *user.CredentialInfo, err error) {
 	var usr = repository.FindUser(username)
-	if usr == nil {
+	if usr.Hash == nil {
 		err = fmt.Errorf("Failed to find user")
 		return
 	}

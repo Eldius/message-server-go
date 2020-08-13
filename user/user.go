@@ -22,6 +22,7 @@ type CredentialInfo struct {
 	User   string `gorm:"unique;not null;UNIQUE_INDEX"`
 	Hash   []byte `gorm:"not null"`
 	Salt   []byte `gorm:"not null"`
+	Name   string
 	Active bool
 	Admin  bool
 }
@@ -30,9 +31,10 @@ type CredentialInfo struct {
 Profile is the user profile
 */
 type Profile struct {
-	ID     int
-	Name   string
-	Active bool
+	ID          int    `gorm:"AUTO_INCREMENT;PRIMARY_KEY"`
+	Name        string `gorm:"unique;not null;UNIQUE_INDEX"`
+	Description string
+	Active      bool
 }
 
 /*

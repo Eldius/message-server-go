@@ -47,9 +47,6 @@ func TestValidatePass(t *testing.T) {
 
 	repository.SaveUser(&u)
 
-	//au := repository.ListUSers()
-	//log.Println("au", au)
-
 	c, err := ValidatePass(username, passwd)
 	if err != nil {
 		t.Error(err)
@@ -71,12 +68,24 @@ func TestValidatePassInvalidCredentials(t *testing.T) {
 
 	repository.SaveUser(&u)
 
-	//au := repository.ListUSers()
-	//log.Println("au", au)
-
 	c, err := ValidatePass(username, "pass")
 	if err != nil {
 		t.Error(err)
+	}
+
+	if c != nil {
+		t.Errorf("Failed to validate user (returned nil value)")
+	}
+
+}
+
+func TestValidatePassUserNotFound(t *testing.T) {
+	username := "user2"
+	passwd := "pass1"
+
+	c, err := ValidatePass(username, passwd)
+	if err == nil {
+		t.Error("Should return an error")
 	}
 
 	if c != nil {

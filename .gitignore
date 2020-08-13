@@ -2,3 +2,7 @@
 bin/
 *.db
 .vscode/
+*.out
+node_modules/
+dist/
+static/bundle/
