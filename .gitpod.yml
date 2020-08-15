@@ -1,0 +1,3 @@
+tasks:
+  - init: yarn install && go build -v && go test ./... && cd .. && go get github.com/spf13/cobra/cobra && cd -
+    command: echo "Ready to code..."
