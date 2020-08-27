@@ -26,7 +26,9 @@ func init() {
 		log.Fatal(err.Error())
 	}
 	os.RemoveAll("/tmp/auth-server-test")
-	os.MkdirAll("/tmp/auth-server-test", os.ModePerm)
+	if err := os.MkdirAll("/tmp/auth-server-test", os.ModePerm); err != nil {
+		log.Panic("Failed to create temp dir for tests.")
+	}
 	viper.SetDefault("app.database.url", fmt.Sprintf("%s/test.db", tmpDir))
 	viper.SetDefault("app.database.engine", "sqlite3")
 	log.Println("db file:", config.GetDBURL())

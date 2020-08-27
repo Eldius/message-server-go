@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -13,5 +14,7 @@ func Start(appPort int) {
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	http.ListenAndServe(fmt.Sprintf(":%d", appPort), nil)
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", appPort), nil); err != nil {
+		log.Panic(err.Error())
+	}
 }

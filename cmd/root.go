@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -70,13 +71,19 @@ func initConfig() {
 
 	viper.SetDefault("app.database.url", "test.db")
 	viper.SetDefault("app.database.engine", "sqlite3")
-	viper.BindEnv("app.database.url", "APP_DATABASE_URL")
-	viper.BindEnv("app.database.engine", "APP_DATABASE_ENGINE")
+	bindEnv("app.database.url", "APP_DATABASE_URL")
+	bindEnv("app.database.engine", "APP_DATABASE_ENGINE")
 
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	}
+}
+
+func bindEnv(key string, envVar string) {
+	if err := viper.BindEnv(key, envVar); err != nil {
+		log.Println(fmt.Sprintf("Failed to bind config key '%s' to environment variable '%s'", key, envVar))
 	}
 }

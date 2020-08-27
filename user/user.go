@@ -43,7 +43,11 @@ NewCredentials  creates a new CredentialInfo
 func NewCredentials(user string, pass string) (cred CredentialInfo, err error) {
 
 	h := sha512.New()
-	h.Write([]byte(pass))
+	_, err = h.Write([]byte(pass))
+	if err != nil {
+		log.Println("Failed to handle pass")
+		return
+	}
 	salt := salt()
 	hash, err := Hash(pass, salt)
 	if err != nil {
