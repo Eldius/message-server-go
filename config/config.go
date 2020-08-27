@@ -16,3 +16,10 @@ func GetDBEngine() string {
 func GetDBLogQueries() bool {
 	return viper.GetBool("app.database.log")
 }
+
+/*
+GetLoggerFormat returns the type of log
+*/
+func GetLoggerFormat() string {
+	return viper.GetString("app.logger.Logger().format")
+}

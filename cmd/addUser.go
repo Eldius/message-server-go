@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"log"
+	"github.com/Eldius/auth-server-go/logger"
 
 	"github.com/Eldius/auth-server-go/repository"
 	"github.com/Eldius/auth-server-go/user"
@@ -15,10 +15,10 @@ var addCmd = &cobra.Command{
 	Long:  `Add a new user.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if c, err := user.NewCredentials(userAddUser, userAddPass); err == nil {
-			log.Println("admin?", userAddAdmin)
+			logger.Logger().Println("admin?", userAddAdmin)
 			c.Admin = userAddAdmin
 			repository.SaveUser(&c)
-			log.Println("User succesfully saved.")
+			logger.Logger().Println("User succesfully saved.")
 		}
 	},
 }

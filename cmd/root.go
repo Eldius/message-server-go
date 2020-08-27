@@ -71,6 +71,8 @@ func initConfig() {
 
 	viper.SetDefault("app.database.url", "test.db")
 	viper.SetDefault("app.database.engine", "sqlite3")
+	viper.SetDefault("app.log.format", "json")
+	bindEnv("app.log.format", "APP_LOG_FORMAT")
 	bindEnv("app.database.url", "APP_DATABASE_URL")
 	bindEnv("app.database.engine", "APP_DATABASE_ENGINE")
 
@@ -84,6 +86,6 @@ func initConfig() {
 
 func bindEnv(key string, envVar string) {
 	if err := viper.BindEnv(key, envVar); err != nil {
-		log.Println(fmt.Sprintf("Failed to bind config key '%s' to environment variable '%s'", key, envVar))
+		log.Panic(fmt.Sprintf("Failed to bind config key '%s' to environment variable '%s'", key, envVar))
 	}
 }

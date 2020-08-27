@@ -2,8 +2,9 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
+
+	"github.com/Eldius/auth-server-go/logger"
 )
 
 /*
@@ -14,7 +15,8 @@ func Start(appPort int) {
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	logger.Logger().Infof("starting app at http://localhost:%d", appPort)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", appPort), nil); err != nil {
-		log.Panic(err.Error())
+		logger.Logger().Panic(err.Error())
 	}
 }

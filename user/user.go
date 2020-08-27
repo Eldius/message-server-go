@@ -4,8 +4,8 @@ import (
 	"crypto/rand"
 	"crypto/sha512"
 	"io"
-	"log"
 
+	"github.com/Eldius/auth-server-go/logger"
 	"golang.org/x/crypto/scrypt"
 )
 
@@ -45,7 +45,7 @@ func NewCredentials(user string, pass string) (cred CredentialInfo, err error) {
 	h := sha512.New()
 	_, err = h.Write([]byte(pass))
 	if err != nil {
-		log.Println("Failed to handle pass")
+		logger.Logger().Println("Failed to handle pass")
 		return
 	}
 	salt := salt()
@@ -67,7 +67,7 @@ func salt() []byte {
 	salt := make([]byte, _pwSaltBytes)
 	_, err := io.ReadFull(rand.Reader, salt)
 	if err != nil {
-		log.Fatal(err)
+		logger.Logger().Fatal(err)
 	}
 
 	return salt
@@ -77,9 +77,9 @@ func salt() []byte {
 func Hash(pass string, salt []byte) (hash []byte, err error) {
 	hash, err = scrypt.Key([]byte(pass), salt, 1<<14, 8, 1, _pwHashBytes)
 	if err != nil {
-		log.Fatal(err)
+		logger.Logger().Fatal(err)
 	}
 
-	log.Printf("%x\n", hash)
+	logger.Logger().Printf("%x\n", hash)
 	return
 }

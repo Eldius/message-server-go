@@ -1,9 +1,8 @@
 package repository
 
 import (
-	"log"
-
 	"github.com/Eldius/auth-server-go/config"
+	"github.com/Eldius/auth-server-go/logger"
 	"github.com/Eldius/auth-server-go/user"
 	"github.com/jinzhu/gorm"
 
@@ -43,15 +42,15 @@ func SaveUser(c *user.CredentialInfo) {
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		if err := tx.Save(c).Error; err != nil {
 			// return any error will rollback
-			log.Println("Error saving credentials")
-			log.Println(err.Error())
+			logger.Logger().Println("Error saving credentials")
+			logger.Logger().Println(err.Error())
 			return err
 		}
 		// return nil will commit
 		return nil
 	})
 	if err != nil {
-		log.Panicln("Failed to insert data\n", err.Error())
+		logger.Logger().Panicln("Failed to insert data\n", err.Error())
 	}
 }
 

@@ -3,11 +3,11 @@ package auth
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"testing"
 
 	"github.com/Eldius/auth-server-go/config"
+	"github.com/Eldius/auth-server-go/logger"
 	"github.com/Eldius/auth-server-go/repository"
 	"github.com/Eldius/auth-server-go/user"
 	"github.com/spf13/viper"
@@ -22,20 +22,20 @@ func init() {
 	var err error
 	tmpDir, err = ioutil.TempDir("", "auth-server")
 	if err != nil {
-		log.Println("Failed to setup temp database")
-		log.Fatal(err.Error())
+		logger.Logger().Println("Failed to setup temp database")
+		logger.Logger().Fatal(err.Error())
 	}
 	os.RemoveAll("/tmp/auth-server-test")
 	if err := os.MkdirAll("/tmp/auth-server-test", os.ModePerm); err != nil {
-		log.Panic("Failed to create temp dir for tests.")
+		logger.Logger().Panic("Failed to create temp dir for tests.")
 	}
 	viper.SetDefault("app.database.url", fmt.Sprintf("%s/test.db", tmpDir))
 	viper.SetDefault("app.database.engine", "sqlite3")
-	log.Println("db file:", config.GetDBURL())
+	logger.Logger().Println("db file:", config.GetDBURL())
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		log.Println("Using config file:", viper.ConfigFileUsed())
+		logger.Logger().Println("Using config file:", viper.ConfigFileUsed())
 	}
 }
 

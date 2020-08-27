@@ -1,8 +1,9 @@
 package user
 
 import (
-	"log"
 	"testing"
+
+	"github.com/Eldius/auth-server-go/logger"
 )
 
 func TestNewCredential(t *testing.T) {
@@ -25,9 +26,9 @@ func TestNewCredential(t *testing.T) {
 
 func TestSalt(t *testing.T) {
 	s0 := salt()
-	log.Println("s0:", s0)
+	logger.Logger().Println("s0:", s0)
 	s1 := salt()
-	log.Println("s1:", s1)
+	logger.Logger().Println("s1:", s1)
 
 	if string(s0) == string(s1) {
 		t.Error("s0 equals s1")
