@@ -36,3 +36,7 @@ export APP_DATABASE_ENGINE='mysql'
 ```shell
 mysql -u auth_usr -h 127.0.0.1 -p'auth_pass' < repository/testqueries/auth-server.sql
 ```
+
+```shell
+golangci-lint run && echo "" && go test ./... -coverprofile=coverage.out && echo "" && go tool cover -func=coverage.out
+```
