@@ -21,5 +21,5 @@ func GetDBLogQueries() bool {
 GetLoggerFormat returns the type of log
 */
 func GetLoggerFormat() string {
-	return viper.GetString("app.logger.Logger().format")
+	return viper.GetString("app.log.format")
 }
