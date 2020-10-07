@@ -71,8 +71,8 @@ func TestValidatePassInvalidCredentials(t *testing.T) {
 	repository.SaveUser(&u)
 
 	c, err := ValidatePass(username, "pass")
-	if err != nil {
-		t.Error(err)
+	if err == nil {
+		t.Error("Should return an error in login process")
 	}
 
 	if c != nil {
