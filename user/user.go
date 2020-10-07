@@ -3,15 +3,20 @@ package user
 import (
 	"crypto/rand"
 	"crypto/sha512"
+	"errors"
 	"io"
+	"regexp"
 
+	"github.com/Eldius/auth-server-go/config"
 	"github.com/Eldius/auth-server-go/logger"
 	"golang.org/x/crypto/scrypt"
 )
 
 const (
-	_pwSaltBytes = 32
-	_pwHashBytes = 64
+	_pwSaltBytes    = 32
+	_pwHashBytes    = 64
+	emptyUsername   = "credentials.username.must.not.be.empty"
+	invalidUsername = "credentials.username.must.match.pattern"
 )
 
 /*
@@ -42,6 +47,10 @@ NewCredentials  creates a new CredentialInfo
 */
 func NewCredentials(user string, pass string) (cred CredentialInfo, err error) {
 
+	if err = validateUsername(user); err != nil {
+		return
+	}
+
 	h := sha512.New()
 	_, err = h.Write([]byte(pass))
 	if err != nil {
@@ -61,6 +70,18 @@ func NewCredentials(user string, pass string) (cred CredentialInfo, err error) {
 	}
 
 	return
+}
+
+func validateUsername(username string) error {
+	if username == "" {
+		return errors.New(emptyUsername)
+	}
+
+	r := regexp.MustCompile(config.GetUsernamePattern())
+	if !r.MatchString(username) {
+		return errors.New(invalidUsername)
+	}
+	return nil
 }
 
 func salt() []byte {
