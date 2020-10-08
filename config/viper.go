@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/google/uuid"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
@@ -15,6 +16,7 @@ func SetDefaults() {
 	viper.SetDefault("app.database.engine", "sqlite3")
 	viper.SetDefault("app.log.format", "json")
 	viper.SetDefault("app.auth.user.pattern", "^[a-zA-Z0-9\\._-]*$")
+	viper.SetDefault("app.auth.jwt.secret", uuid.New().String())
 }
 
 func BindEnvVars() {
@@ -22,6 +24,7 @@ func BindEnvVars() {
 	bindEnv("app.database.url", "APP_DATABASE_URL")
 	bindEnv("app.database.engine", "APP_DATABASE_ENGINE")
 	bindEnv("app.auth.pass.pattern", "APP_AUTH_PASS_PATTERN")
+	bindEnv("app.auth.jwt.secret", "APP_AUTH_JWT_SECRET")
 }
 
 func SetupViper(cfgFile string) {

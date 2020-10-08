@@ -31,3 +31,10 @@ validate username
 func GetUsernamePattern() string {
 	return viper.GetString("app.auth.user.pattern")
 }
+
+/*
+GetJWTSecret returns the JWT secret to be used
+*/
+func GetJWTSecret() string {
+	return viper.GetString("app.auth.jwt.secret")
+}

@@ -20,7 +20,8 @@ HandleLogin handles login requests
 func HandleLogin() http.HandlerFunc {
 	log := logger.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("Content-Type", "application/json")
+		//w.Header().Add("Content-Type", "application/json")
+		w.Header().Add("Content-Type", "plain/text")
 		var u LoginRequest
 		err := json.NewDecoder(r.Body).Decode(&u)
 		if err != nil {
@@ -48,10 +49,6 @@ func HandleLogin() http.HandlerFunc {
 			return
 		}
 		log.Println(cred.User)
-		body, err := json.Marshal(map[string]string{
-			"user": cred.User,
-			"name": cred.Name,
-		})
 		if err != nil {
 			log.WithError(err).
 				WithFields(logrus.Fields{
@@ -63,8 +60,13 @@ func HandleLogin() http.HandlerFunc {
 			return
 		}
 
+		token, err := ToJWT(*cred)
+		if err != nil {
+			log.WithError(err).Println("Failed to generate token")
+			w.WriteHeader(500)
+		}
 		w.WriteHeader(200)
-		_, _ = w.Write(body)
+		_, _ = w.Write([]byte(token))
 	}
 }
 

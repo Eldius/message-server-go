@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/Eldius/auth-server-go/config"
@@ -94,4 +95,21 @@ func TestValidatePassUserNotFound(t *testing.T) {
 		t.Errorf("Failed to validate user (returned nil value)")
 	}
 
+}
+
+func TestToJWT(t *testing.T) {
+	u, err := user.NewCredentials("myUser", "myPass")
+	if err != nil {
+		t.Errorf("Failed to create the test user\n%s", err.Error())
+	}
+	token, err := ToJWT(u)
+	if err != nil {
+		t.Errorf("Failed to create token\n%s", err.Error())
+	}
+	t.Logf("token: %s", token)
+
+	parts := strings.Split(token, ".")
+	if len(parts) != 3 {
+		t.Errorf("Should return 3 parts separated by dot (.), but returned %d", len(parts))
+	}
 }
