@@ -47,7 +47,7 @@ func HandleLogin() http.HandlerFunc {
 			w.WriteHeader(401)
 			return
 		}
-		log.Println(cred)
+		log.Println(cred.User)
 		body, err := json.Marshal(map[string]string{
 			"user": cred.User,
 			"name": cred.Name,

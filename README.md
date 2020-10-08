@@ -40,3 +40,13 @@ mysql -u auth_usr -h 127.0.0.1 -p'auth_pass' < repository/testqueries/auth-serve
 ```shell
 golangci-lint run && echo "" && go test ./... -coverprofile=coverage.out && echo "" && go tool cover -func=coverage.out
 ```
+
+### some tests ###
+
+```shell
+curl -i localhost:8000/login -d '{"user": "eldius", "pass": "MyStrongPass@1"}'
+```
+
+```shell
+curl -i localhost:8000/admin -H "Authorization: Bearer ABC123"
+```

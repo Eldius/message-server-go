@@ -100,7 +100,5 @@ func Hash(pass string, salt []byte) (hash []byte, err error) {
 	if err != nil {
 		logger.Logger().Fatal(err)
 	}
-
-	logger.Logger().Printf("%x\n", hash)
 	return
 }
