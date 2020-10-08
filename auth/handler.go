@@ -3,6 +3,7 @@ package auth
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/Eldius/auth-server-go/logger"
 	"github.com/sirupsen/logrus"
@@ -56,7 +57,11 @@ func AuthInterceptor(f http.HandlerFunc) http.Handler {
 		log := logger.Logger()
 		authHeader := r.Header.Get("Authorization")
 		// TODO remove this before release
-		log.WithField("header", authHeader).Println("authInterceptor")
-		f.ServeHTTP(w, r)
+		if strings.HasPrefix(authHeader, "Bearer ") {
+			log.WithField("header", authHeader).Println("authInterceptor")
+			f.ServeHTTP(w, r)
+		} else {
+			w.WriteHeader(403)
+		}
 	})
 }
