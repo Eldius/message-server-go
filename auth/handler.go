@@ -20,6 +20,7 @@ HandleLogin handles login requests
 func HandleLogin() http.HandlerFunc {
 	log := logger.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-Type", "application/json")
 		var u LoginRequest
 		err := json.NewDecoder(r.Body).Decode(&u)
 		if err != nil {
@@ -47,8 +48,23 @@ func HandleLogin() http.HandlerFunc {
 			return
 		}
 		log.Println(cred)
+		body, err := json.Marshal(map[string]string{
+			"user": cred.User,
+			"name": cred.Name,
+		})
+		if err != nil {
+			log.WithError(err).
+				WithFields(logrus.Fields{
+					"details": "Failed to validate credentials",
+					"user":    u.User,
+				}).
+				Println("HandleLogin")
+			w.WriteHeader(401)
+			return
+		}
+
 		w.WriteHeader(200)
-		_, _ = w.Write([]byte("OK"))
+		_, _ = w.Write(body)
 	}
 }
 

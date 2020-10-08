@@ -19,8 +19,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AdminHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(200)
 	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(200)
 	reqId := r.Context().Value(ContextKeyRequestID)
 	response := map[string]interface{}{
 		"msg": "response message!",
