@@ -23,7 +23,7 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 	reqId := r.Context().Value(ContextKeyRequestID)
 	response := map[string]interface{}{
-		"msg": "response message!",
+		"msg":   "response message!",
 		"reqId": reqId,
 	}
 	body, err := json.Marshal(response)

@@ -17,7 +17,7 @@ const ContextKeyRequestID ContextKey = "requestID"
 func RequestIdInterceptor(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log := logger.Logger()
-    	ctx := r.Context()
+		ctx := r.Context()
 		id := uuid.New()
 		ctx = context.WithValue(ctx, ContextKeyRequestID, id.String())
 		r = r.WithContext(ctx)
