@@ -5,7 +5,9 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/Eldius/auth-server-go/auth"
 	"github.com/Eldius/auth-server-go/logger"
+	"github.com/Eldius/auth-server-go/user"
 )
 
 var temp = template.Must(template.ParseGlob("templates/*.html"))
@@ -22,14 +24,11 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(200)
 	reqId := r.Context().Value(ContextKeyRequestID)
+	u := r.Context().Value(auth.CurrentUserKey).(*user.CredentialInfo)
 	response := map[string]interface{}{
 		"msg":   "response message!",
 		"reqId": reqId,
+		"user":  u.User,
 	}
-	body, err := json.Marshal(response)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	_, _ = w.Write(body)
+	_ = json.NewEncoder(w).Encode(response)
 }

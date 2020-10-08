@@ -1,17 +1,27 @@
-  
-# This is a sample build configuration for Go.
-# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-image: golang:1.14
+---
+definitions:
+  steps:
+    - step: &test-code
+        name: Test step
+        image: golang:1.14
+        script:
+          - go get -v
+          - go test -timeout 30s -cover ./...
+        caches:
+          - go
+    - step: &lint-code
+        name: Code lint step
+        image: golang:1.14
+        script:
+          - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin "latest"
+          - go get -v
+          - golangci-lint run
+        caches:
+          - go
+  caches:
+    go: $GOPATH/pkg
 
 pipelines:
   default:
-    - step:
-        name: Test and code lint
-        script:
-          - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.31.0
-          - go get -v ./...
-          - go test -v -cover ./...
-          - golangci-lint run
+    - step: *test-code
+    - step: *lint-code

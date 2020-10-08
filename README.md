@@ -44,9 +44,20 @@ golangci-lint run && echo "" && go test ./... -coverprofile=coverage.out && echo
 ### some tests ###
 
 ```shell
-curl -i localhost:8000/login -d '{"user": "eldius", "pass": "MyStrongPass@1"}'
+go run user add -u "eldius" -W "MyStrongPass@1" -a
 ```
 
 ```shell
-curl -i localhost:8000/admin -H "Authorization: Bearer ABC123"
+curl -i localhost:8000/login -d '{"user": "eldius", "pass": "MyStrongPass@1"}'
+# returns something like this
+# {"token":"header.payload.sign"}
+```
+
+```shell
+# the "header.payload.sign" value is acquired in the last snippet call
+curl -i localhost:8000/admin -H "Authorization: Bearer header.payload.sign"
+```
+
+```shell
+curl -i localhost:8000/admin -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "eldius", "pass": "pass@1"}' 2>/dev/null | jq -r '. | .token' )" 2>/dev/null
 ```
