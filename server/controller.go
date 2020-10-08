@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"html/template"
 	"net/http"
 
@@ -20,5 +21,15 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func AdminHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 	w.Header().Add("Content-Type", "application/json")
-	_, _ = w.Write([]byte("{\"msg\": \"response message!\"}"))
+	reqId := r.Context().Value(ContextKeyRequestID)
+	response := map[string]interface{}{
+		"msg": "response message!",
+		"reqId": reqId,
+	}
+	body, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	_, _ = w.Write(body)
 }

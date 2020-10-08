@@ -33,7 +33,7 @@ func Start(appPort int) {
 
 	host := fmt.Sprintf(":%d", appPort)
 	logger.Logger().Infof("starting app at '%s'", host)
-	if err := http.ListenAndServe(host, mux); err != nil {
+	if err := http.ListenAndServe(host, RequestIdInterceptor(mux)); err != nil {
 		logger.Logger().Panic(err.Error())
 	}
 }
