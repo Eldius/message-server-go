@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/Eldius/auth-server-go/config"
+	"github.com/Eldius/auth-server-go/hashtools"
 	"github.com/Eldius/auth-server-go/repository"
 	"github.com/Eldius/auth-server-go/user"
 )
@@ -28,7 +29,7 @@ func ValidatePass(username string, pass string) (u *user.CredentialInfo, err err
 	}
 
 	var ph []byte
-	ph, err = user.Hash(pass, usr.Salt)
+	ph, err = hashtools.Hash(pass, usr.Salt)
 	if err != nil {
 		return
 	}
