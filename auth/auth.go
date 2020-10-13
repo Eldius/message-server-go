@@ -105,7 +105,6 @@ func AuthInterceptor(f http.HandlerFunc) http.Handler {
 		// TODO remove this before release
 		if strings.HasPrefix(authHeader, "Bearer ") {
 			jwt := strings.Replace(authHeader, "Bearer ", "", 1)
-			log.Println(jwt)
 			u, err := FromJWT(jwt)
 			if err != nil {
 				log.WithError(err).
@@ -116,7 +115,6 @@ func AuthInterceptor(f http.HandlerFunc) http.Handler {
 			ctx := r.Context()
 			ctx = context.WithValue(ctx, CurrentUserKey, u)
 			r = r.WithContext(ctx)
-			log.WithField("header", authHeader).Println("authInterceptor")
 			f.ServeHTTP(w, r)
 		} else {
 			w.WriteHeader(403)
