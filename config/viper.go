@@ -39,8 +39,8 @@ func SetupViper(cfgFile string) {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".auth-server-go" (without extension).
-		viper.AddConfigPath(filepath.Join(home, ".auth-server-go"))
+		// Search config in home directory with name ".message-server-go" (without extension).
+		viper.AddConfigPath(filepath.Join(home, ".message-server-go"))
 		viper.SetConfigName("auth-server")
 		viper.SetConfigType("yml")
 	}

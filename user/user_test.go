@@ -3,7 +3,7 @@ package user
 import (
 	"testing"
 
-	"github.com/Eldius/auth-server-go/config"
+	"github.com/Eldius/message-server-go/config"
 )
 
 func init() {

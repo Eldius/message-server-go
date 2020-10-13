@@ -3,7 +3,7 @@ package hashtools
 import (
 	"testing"
 
-	"github.com/Eldius/auth-server-go/logger"
+	"github.com/Eldius/message-server-go/logger"
 )
 
 func TestSalt(t *testing.T) {

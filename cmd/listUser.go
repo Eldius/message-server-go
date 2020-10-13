@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/Eldius/auth-server-go/repository"
+	"github.com/Eldius/message-server-go/repository"
 	"github.com/spf13/cobra"
 )
 

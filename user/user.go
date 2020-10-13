@@ -5,9 +5,9 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/Eldius/auth-server-go/config"
-	"github.com/Eldius/auth-server-go/hashtools"
-	"github.com/Eldius/auth-server-go/logger"
+	"github.com/Eldius/message-server-go/config"
+	"github.com/Eldius/message-server-go/hashtools"
+	"github.com/Eldius/message-server-go/logger"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/Eldius/auth-server-go/logger"
+	"github.com/Eldius/message-server-go/logger"
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 )

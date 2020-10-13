@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Eldius/auth-server-go/logger"
+	"github.com/Eldius/message-server-go/logger"
 	"github.com/sirupsen/logrus"
 )
 

@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Eldius/auth-server-go/auth"
-	"github.com/Eldius/auth-server-go/logger"
-	"github.com/Eldius/auth-server-go/repository"
+	"github.com/Eldius/message-server-go/auth"
+	"github.com/Eldius/message-server-go/logger"
+	"github.com/Eldius/message-server-go/repository"
 	"github.com/Eldius/webapp-healthcheck-go/health"
 )
 
@@ -25,7 +25,7 @@ func Start(appPort int) {
 	mux.HandleFunc("/health", health.BuildChecker([]health.ServiceChecker{
 		health.NewDBChecker("main-db", repository.GetDB().DB(), time.Duration(2*time.Second)),
 	}, map[string]string{
-		"app": "auth-server-go",
+		"app": "message-server-go",
 	},
 	))
 

@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/Eldius/auth-server-go/clients"
-	"github.com/Eldius/auth-server-go/logger"
+	"github.com/Eldius/message-server-go/clients"
+	"github.com/Eldius/message-server-go/logger"
 	"github.com/jinzhu/gorm"
 )
 

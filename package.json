@@ -1,5 +1,5 @@
 {
-  "name": "auth-server-go",
+  "name": "message-server-go",
   "version": "1.0.0",
   "scripts": {
     "build-dev": "webpack --mode=development --config webpack.config.js",

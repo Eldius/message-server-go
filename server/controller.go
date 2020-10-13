@@ -5,9 +5,9 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/Eldius/auth-server-go/auth"
-	"github.com/Eldius/auth-server-go/logger"
-	"github.com/Eldius/auth-server-go/user"
+	"github.com/Eldius/message-server-go/auth"
+	"github.com/Eldius/message-server-go/logger"
+	"github.com/Eldius/message-server-go/user"
 )
 
 var temp = template.Must(template.ParseGlob("templates/*.html"))

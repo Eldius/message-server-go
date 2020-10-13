@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Eldius/auth-server-go/config"
+	"github.com/Eldius/message-server-go/config"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +15,7 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "auth-server-go",
+	Use:   "message-server-go",
 	Short: "A simple auth server",
 	Long:  `A simple auth server.`,
 	// Uncomment the following line if your bare application
@@ -39,7 +39,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.auth-server-go.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.message-server-go.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"github.com/Eldius/auth-server-go/clients"
-	"github.com/Eldius/auth-server-go/config"
-	"github.com/Eldius/auth-server-go/user"
+	"github.com/Eldius/message-server-go/clients"
+	"github.com/Eldius/message-server-go/config"
+	"github.com/Eldius/message-server-go/user"
 	"github.com/jinzhu/gorm"
 
 	// I need this

@@ -1,4 +1,4 @@
-module github.com/Eldius/auth-server-go
+module github.com/Eldius/message-server-go
 
 go 1.14
 

@@ -3,7 +3,7 @@ package clients
 import (
 	"time"
 
-	"github.com/Eldius/auth-server-go/hashtools"
+	"github.com/Eldius/message-server-go/hashtools"
 	"github.com/google/uuid"
 )
 

@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/Eldius/auth-server-go/cmd"
+import "github.com/Eldius/message-server-go/cmd"
 
 func main() {
 	cmd.Execute()
