@@ -17,6 +17,7 @@ var addCmd = &cobra.Command{
 		if c, err := user.NewCredentials(userAddUser, userAddPass); err == nil {
 			logger.Logger().Println("admin?", userAddAdmin)
 			c.Admin = userAddAdmin
+			c.Name = userAddName
 			repository.SaveUser(&c)
 			logger.Logger().Println("User succesfully saved.")
 		}
@@ -26,6 +27,7 @@ var addCmd = &cobra.Command{
 var (
 	userAddUser  string
 	userAddPass  string
+	userAddName  string
 	userAddAdmin bool
 )
 
@@ -34,6 +36,7 @@ func init() {
 
 	addCmd.Flags().StringVarP(&userAddUser, "user", "u", "", "-u <username>")
 	addCmd.Flags().StringVarP(&userAddPass, "pass", "W", "", "-W <password>")
+	addCmd.Flags().StringVarP(&userAddName, "name", "n", "", "-n <name>")
 	addCmd.Flags().BoolVarP(&userAddAdmin, "admin", "a", false, "-a")
 
 	// Here you will define your flags and configuration settings.
