@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/Eldius/message-server-go/clients"
 	"github.com/Eldius/message-server-go/config"
+	"github.com/Eldius/message-server-go/messenger"
 	"github.com/Eldius/message-server-go/user"
 	"github.com/jinzhu/gorm"
 
@@ -29,6 +29,6 @@ func initDB() *gorm.DB {
 	if config.GetDBLogQueries() {
 		db.LogMode(true)
 	}
-	db.AutoMigrate(&user.CredentialInfo{}, &user.Profile{}, &clients.ClientInfo{})
+	db.AutoMigrate(&user.CredentialInfo{}, &user.Profile{}, &messenger.Message{})
 	return db
 }

@@ -61,3 +61,4 @@ curl -i localhost:8000/admin -H "Authorization: Bearer header.payload.sign"
 ```shell
 curl -i localhost:8000/admin -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "eldius", "pass": "pass@1"}' 2>/dev/null | jq -r '. | .token' )" 2>/dev/null
 ```
+curl -i localhost:8000/admin -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "user", "pass": "pass"}' 2>/dev/null | jq -r '. | .token' )" 2>/dev/null

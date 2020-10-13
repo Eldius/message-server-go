@@ -1,10 +1,8 @@
 package auth
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	"github.com/Eldius/message-server-go/logger"
 	"github.com/sirupsen/logrus"
@@ -77,29 +75,4 @@ func HandleLogin() http.HandlerFunc {
 			"token": token,
 		})
 	}
-}
-
-func AuthInterceptor(f http.HandlerFunc) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log := logger.Logger()
-		authHeader := r.Header.Get("Authorization")
-		// TODO remove this before release
-		if strings.HasPrefix(authHeader, "Bearer ") {
-			jwt := strings.Replace(authHeader, "Bearer ", "", 1)
-			u, err := FromJWT(jwt)
-			if err != nil {
-				log.WithError(err).
-					Warn("FailedToAuthorize")
-				w.WriteHeader(403)
-				return
-			}
-			ctx := r.Context()
-			ctx = context.WithValue(ctx, CurrentUserKey, u)
-			r = r.WithContext(ctx)
-			log.WithField("header", authHeader).Println("authInterceptor")
-			f.ServeHTTP(w, r)
-		} else {
-			w.WriteHeader(403)
-		}
-	})
 }

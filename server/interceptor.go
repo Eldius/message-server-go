@@ -31,14 +31,18 @@ func RequestIdInterceptor(next http.Handler) http.Handler {
 func CORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log := logger.Logger()
+		origin := r.Header.Get("Origin")
 		log.WithFields(logrus.Fields{
 			"origin": r.Header.Get("Origin"),
 			"dest":   r.URL.String(),
 			"method": r.Method,
 		}).Info("CORS")
 
-		w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		next.ServeHTTP(w, r)
+
+		if origin == "" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		}
 	})
 }

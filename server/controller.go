@@ -20,6 +20,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func MessageHAndler(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func AdminHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(200)

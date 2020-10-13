@@ -1,16 +1,19 @@
 package auth
 
 import (
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/Eldius/message-server-go/config"
 	"github.com/Eldius/message-server-go/hashtools"
+	"github.com/Eldius/message-server-go/logger"
 	"github.com/Eldius/message-server-go/repository"
 	"github.com/Eldius/message-server-go/user"
 )
@@ -79,7 +82,7 @@ func FromJWT(jwt string) (u *user.CredentialInfo, err error) {
 		return
 	}
 
-	b, err := base64.RawStdEncoding.DecodeString(parts[1])
+	b, err := base64.StdEncoding.DecodeString(parts[1])
 	if err != nil {
 		return
 	}
@@ -93,6 +96,32 @@ func FromJWT(jwt string) (u *user.CredentialInfo, err error) {
 	u = repository.FindUser(tmpData["user"])
 
 	return
+}
+
+func AuthInterceptor(f http.HandlerFunc) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log := logger.Logger()
+		authHeader := r.Header.Get("Authorization")
+		// TODO remove this before release
+		if strings.HasPrefix(authHeader, "Bearer ") {
+			jwt := strings.Replace(authHeader, "Bearer ", "", 1)
+			log.Println(jwt)
+			u, err := FromJWT(jwt)
+			if err != nil {
+				log.WithError(err).
+					Warn("FailedToAuthorize")
+				w.WriteHeader(403)
+				return
+			}
+			ctx := r.Context()
+			ctx = context.WithValue(ctx, CurrentUserKey, u)
+			r = r.WithContext(ctx)
+			log.WithField("header", authHeader).Println("authInterceptor")
+			f.ServeHTTP(w, r)
+		} else {
+			w.WriteHeader(403)
+		}
+	})
 }
 
 func generateHeader(u user.CredentialInfo) (headerStr string, err error) {

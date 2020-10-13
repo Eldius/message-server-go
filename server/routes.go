@@ -1,20 +1,18 @@
 package server
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/Eldius/message-server-go/auth"
-	"github.com/Eldius/message-server-go/logger"
 	"github.com/Eldius/message-server-go/repository"
 	"github.com/Eldius/webapp-healthcheck-go/health"
 )
 
 /*
-Start starts server
+Routes creates the app router
 */
-func Start(appPort int) {
+func Routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", IndexHandler)
 	mux.HandleFunc("/login", auth.HandleLogin())
@@ -31,9 +29,5 @@ func Start(appPort int) {
 
 	mux.Handle("/admin", auth.AuthInterceptor(AdminHandler))
 
-	host := fmt.Sprintf(":%d", appPort)
-	logger.Logger().Infof("starting app at '%s'", host)
-	if err := http.ListenAndServe(host, CORS(RequestIdInterceptor(mux))); err != nil {
-		logger.Logger().Panic(err.Error())
-	}
+	return mux
 }
