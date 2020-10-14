@@ -35,6 +35,14 @@ func FindUser(username string) *user.CredentialInfo {
 	return &u
 }
 
+// FindUser finds the user
+func FindUserByID(id int) *user.CredentialInfo {
+
+	u := user.CredentialInfo{}
+	GetDB().Where("ID = ?", id).First(&u)
+	return &u
+}
+
 // ListUSers returns all users
 func ListUSers() (r []user.CredentialInfo) {
 	GetDB().Find(&r, "")

@@ -20,6 +20,14 @@ type NewMessageRequest struct {
 	Message string `json:"msg"`
 }
 
+type MessageResponse struct {
+	ID          uuid.UUID `json:"id"`
+	From        string    `json:"from"`
+	Destination string    `json:"to"`
+	Sent        time.Time `json:"sent"`
+	Message     string    `json:"msg"`
+}
+
 func NewMessage(from int, to int) *Message {
 	return &Message{
 		ID:          uuid.New(),

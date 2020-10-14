@@ -39,7 +39,16 @@ func MessageHandler(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == http.MethodGet {
 		w.Header().Add("Content-Type", "application/json")
 		u := auth.GetCurrentUser(r)
-		msgs := repository.FindMessageTo(u.ID)
+		var msgs []messenger.MessageResponse
+		for _, m := range repository.FindMessageTo(u.ID) {
+			msgs = append(msgs, messenger.MessageResponse{
+				ID:          m.ID,
+				Destination: u.Name,
+				From:        parseMessageOrigin(m),
+				Message:     m.Message,
+				Sent:        m.Sent,
+			})
+		}
 
 		if err := json.NewEncoder(w).Encode(msgs); err != nil {
 			log.WithError(err).Error("FailedToFetchMessages")
@@ -60,4 +69,13 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
 		"user":  u.User,
 	}
 	_ = json.NewEncoder(w).Encode(response)
+}
+
+// TODO think about use a cache solution here
+func parseMessageOrigin(m messenger.Message) string {
+	fromUsr := repository.FindUserByID(m.From)
+	if fromUsr != nil {
+		return fromUsr.Name
+	}
+	return ""
 }
