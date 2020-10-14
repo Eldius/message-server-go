@@ -32,7 +32,7 @@ func SaveMessage(c *messenger.Message) {
 func FindMessageTo(to int) []messenger.Message {
 
 	m := []messenger.Message{}
-	GetDB().Where("To = ?", to).First(&m)
+	GetDB().Where("Destination = ?", to).Order("Sent asc").Find(&m)
 	return m
 }
 

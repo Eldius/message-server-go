@@ -23,6 +23,7 @@ func BindEnvVars() {
 	bindEnv("app.log.format", "APP_LOG_FORMAT")
 	bindEnv("app.database.url", "APP_DATABASE_URL")
 	bindEnv("app.database.engine", "APP_DATABASE_ENGINE")
+	bindEnv("app.database.log", "APP_DATABASE_LOG")
 	bindEnv("app.auth.pass.pattern", "APP_AUTH_PASS_PATTERN")
 	bindEnv("app.auth.jwt.secret", "APP_AUTH_JWT_SECRET")
 }

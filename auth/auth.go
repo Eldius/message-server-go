@@ -122,6 +122,11 @@ func AuthInterceptor(f http.HandlerFunc) http.Handler {
 	})
 }
 
+func GetCurrentUser(r *http.Request) *user.CredentialInfo {
+	ctx := r.Context()
+	return ctx.Value(CurrentUserKey).(*user.CredentialInfo)
+}
+
 func generateHeader(u user.CredentialInfo) (headerStr string, err error) {
 	header := map[string]string{
 		"alg": "HS256",

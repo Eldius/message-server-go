@@ -7,6 +7,8 @@ import (
 
 	"github.com/Eldius/message-server-go/auth"
 	"github.com/Eldius/message-server-go/logger"
+	"github.com/Eldius/message-server-go/messenger"
+	"github.com/Eldius/message-server-go/repository"
 	"github.com/Eldius/message-server-go/user"
 )
 
@@ -20,8 +22,31 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func MessageHAndler(w http.ResponseWriter, r *http.Request) {
+func MessageHandler(w http.ResponseWriter, r *http.Request) {
+	log := logger.Logger()
+	if r.Method == http.MethodPost {
+		var mr *messenger.NewMessageRequest
+		if err := json.NewDecoder(r.Body).Decode(&mr); err != nil {
+			log.WithError(err).Error("FailedToSaveMessage")
+			return
+		}
+		from := auth.GetCurrentUser(r)
+		to := repository.FindUser(mr.To)
+		m := messenger.NewMessageWithMessage(from.ID, to.ID, mr.Message)
 
+		w.WriteHeader(201)
+		repository.SaveMessage(m)
+	} else if r.Method == http.MethodGet {
+		w.Header().Add("Content-Type", "application/json")
+		u := auth.GetCurrentUser(r)
+		msgs := repository.FindMessageTo(u.ID)
+
+		if err := json.NewEncoder(w).Encode(msgs); err != nil {
+			log.WithError(err).Error("FailedToFetchMessages")
+			return
+		}
+	}
+	w.WriteHeader(405)
 }
 
 func AdminHandler(w http.ResponseWriter, r *http.Request) {

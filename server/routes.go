@@ -16,8 +16,6 @@ func Routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", IndexHandler)
 	mux.HandleFunc("/login", auth.HandleLogin())
-	fs := http.FileServer(http.Dir("./static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Health check
 	mux.HandleFunc("/health", health.BuildChecker([]health.ServiceChecker{
@@ -28,6 +26,7 @@ func Routes() http.Handler {
 	))
 
 	mux.Handle("/admin", auth.AuthInterceptor(AdminHandler))
+	mux.Handle("/message", auth.AuthInterceptor(MessageHandler))
 
 	return mux
 }
