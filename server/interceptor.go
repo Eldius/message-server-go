@@ -39,10 +39,17 @@ func CORS(next http.Handler) http.Handler {
 		}).Info("CORS")
 
 		if origin != "" {
+			log.Println("setupHeaders")
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+			w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type, Origin, Host")
+			w.WriteHeader(200)
 		}
 
-		next.ServeHTTP(w, r)
+		if r.Method != http.MethodOptions {
+			log.Println("executeRequest")
+			next.ServeHTTP(w, r)
+		}
+
 	})
 }
