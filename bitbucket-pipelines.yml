@@ -18,6 +18,32 @@ definitions:
           - golangci-lint run
         caches:
           - go
+    - step: &build-app-linux-amd64
+        name: Code lint step
+        image: golang:1.14
+        script:
+          - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)'" .
+        caches:
+          - go
+        artifacts:
+            - bin/*
+    - step: &build-app-raspbian
+        name: Code lint step
+        image: golang:1.14
+        script:
+          - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -v -o bin/message-server-raspberry -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)'" .
+        caches:
+          - go
+        artifacts:
+            - bin/*
+    - step: &upload-binaries
+        name: Save binaries to Bitbucket Downloads
+        pipe: atlassian/bitbucket-upload-file:0.3.1
+        variables:
+          BITBUCKET_USERNAME: $BITBUCKET_USERNAME
+          BITBUCKET_APP_PASSWORD: $BITBUCKET_APP_PASSWORD
+          FILENAME: 'bin/*'
+
   caches:
     go: $GOPATH/pkg
 
