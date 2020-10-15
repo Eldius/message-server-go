@@ -64,5 +64,5 @@ curl -i localhost:8000/admin -H "Authorization: Bearer $( curl --fail localhost:
 
 ```shell
 #send message
-curl -i -XOPTIONS localhost:8000/message -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "user", "pass": "pass"}' 2>/dev/null | jq -r '. | .token' )" -d '{"to": "user1","msg": "My new message 01!"}' 2>/dev/null
+curl -i -XPOST localhost:8000/message -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "user", "pass": "pass"}' 2>/dev/null | jq -r '. | .token' )" -d '{"to": "user1","msg": "My new message 01!"}' 2>/dev/null
 ```
