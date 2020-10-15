@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Eldius/message-server-go/auth"
+	"github.com/Eldius/message-server-go/config"
 	"github.com/Eldius/message-server-go/repository"
 	"github.com/Eldius/webapp-healthcheck-go/health"
 )
@@ -22,8 +23,9 @@ func Routes() http.Handler {
 		health.NewDBChecker("main-db", repository.GetDB().DB(), time.Duration(2*time.Second)),
 	}, map[string]string{
 		"app": "message-server-go",
-	},
-	))
+		"version": config.GetVersion(),
+		"build-date": config.GetBuildDate(),
+	}))
 
 	mux.Handle("/admin", auth.AuthInterceptor(AdminHandler))
 	mux.Handle("/message", auth.AuthInterceptor(MessageHandler))
