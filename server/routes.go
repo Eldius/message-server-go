@@ -25,6 +25,7 @@ func Routes() http.Handler {
 		"app": "message-server-go",
 		"version": config.GetVersion(),
 		"build-date": config.GetBuildDate(),
+		"branch-name": config.GetBranchName(),
 	}))
 
 	mux.Handle("/admin", auth.AuthInterceptor(AdminHandler))
