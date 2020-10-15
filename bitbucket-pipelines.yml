@@ -37,6 +37,7 @@ definitions:
         artifacts:
             - bin/*
     - step: &upload-files
+        name: Save files
         script:
           - pipe: atlassian/bitbucket-upload-file:0.3.1
             variables:
