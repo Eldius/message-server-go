@@ -36,6 +36,13 @@ definitions:
           - go
         artifacts:
             - bin/*
+    - step: &upload-files
+        script:
+            - pipe: atlassian/bitbucket-upload-file:0.3.1
+                variables:
+                  BITBUCKET_USERNAME: $BITBUCKET_USERNAME
+                  BITBUCKET_APP_PASSWORD: $BITBUCKET_APP_PASSWORD
+                  FILENAME: 'bin/*'
 
   caches:
     go: $GOPATH/pkg
@@ -46,3 +53,4 @@ pipelines:
     - step: *lint-code
     - step: *build-app-linux-amd64
     - step: *build-app-raspbian
+    - step: *upload-files
