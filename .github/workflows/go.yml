@@ -35,6 +35,9 @@ jobs:
 
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v1.2.1
+      with:
+        # version of golangci-lint to use in form of v1.2.3
+        version: latest
 
     - name: Build Linux x64
       run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
