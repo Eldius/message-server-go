@@ -3,8 +3,8 @@ package config
 import "github.com/spf13/viper"
 
 var (
-	version string
-	buildDate string
+	version    string
+	buildDate  string
 	branchName string
 )
 

@@ -3,8 +3,8 @@ package cmd
 import (
 	"github.com/Eldius/message-server-go/logger"
 
-	"github.com/Eldius/message-server-go/repository"
-	"github.com/Eldius/message-server-go/user"
+	"github.com/Eldius/jwt-auth-go/repository"
+	"github.com/Eldius/jwt-auth-go/user"
 	"github.com/spf13/cobra"
 )
 

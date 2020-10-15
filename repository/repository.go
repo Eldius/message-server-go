@@ -3,7 +3,6 @@ package repository
 import (
 	"github.com/Eldius/message-server-go/config"
 	"github.com/Eldius/message-server-go/messenger"
-	"github.com/Eldius/message-server-go/user"
 	"github.com/jinzhu/gorm"
 
 	// I need this
@@ -29,6 +28,6 @@ func initDB() *gorm.DB {
 	if config.GetDBLogQueries() {
 		db.LogMode(true)
 	}
-	db.AutoMigrate(&user.CredentialInfo{}, &user.Profile{}, &messenger.Message{})
+	db.AutoMigrate(&messenger.Message{})
 	return db
 }

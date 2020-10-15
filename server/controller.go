@@ -5,11 +5,12 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/Eldius/message-server-go/auth"
+	"github.com/Eldius/jwt-auth-go/auth"
+	authRepo "github.com/Eldius/jwt-auth-go/repository"
+	"github.com/Eldius/jwt-auth-go/user"
 	"github.com/Eldius/message-server-go/logger"
 	"github.com/Eldius/message-server-go/messenger"
 	"github.com/Eldius/message-server-go/repository"
-	"github.com/Eldius/message-server-go/user"
 )
 
 var temp = template.Must(template.ParseGlob("templates/*.html"))
@@ -31,7 +32,7 @@ func MessageHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		from := auth.GetCurrentUser(r)
-		to := repository.FindUser(mr.To)
+		to := authRepo.FindUser(mr.To)
 		m := messenger.NewMessageWithMessage(from.ID, to.ID, mr.Message)
 
 		w.WriteHeader(201)
@@ -73,7 +74,7 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
 
 // TODO think about use a cache solution here
 func parseMessageOrigin(m messenger.Message) string {
-	fromUsr := repository.FindUserByID(m.From)
+	fromUsr := authRepo.FindUserByID(m.From)
 	if fromUsr != nil {
 		return fromUsr.Name
 	}
