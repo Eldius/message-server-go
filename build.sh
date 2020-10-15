@@ -3,26 +3,28 @@
 CURR_DIR=${PWD}
 
 DOCKER_OWNER=eldius
-DOCKER_REPO=auth-server
-VERSION=0.0.1
-CONTAINER_NAME=auth-server
-APP_BIN_FILE=auth-server
+DOCKER_REPO=message-server
+VERSION="$( git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)"
+CONTAINER_NAME=message-server
+APP_BIN_FILE=message-server
+
+clean_workspace() {
+  rm -rf ./bin
+}
 
 build_app() {
     if [ "${TEST}" -eq "1" ];then
       echo "######################"
       echo "# testing app code   #"
       echo "######################"
-      go test ./... \
+      go test ./... -cover -race \
         || exit 1
     fi
 
     echo "######################"
     echo "# building app       #"
     echo "######################"
-    yarn install && \
-    yarn run build-dev && \
-    CGO_ENABLED=0 GOOS=linux go build -v -o bin/$APP_BIN_FILE -a -ldflags '-extldflags "-static"' . \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" . \
     || exit 1
 }
 

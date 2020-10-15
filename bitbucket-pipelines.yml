@@ -22,20 +22,35 @@ definitions:
         name: Build Linux x64
         image: golang:1.14
         script:
-          - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git branch --show-current)'" .
+          - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
         caches:
           - go
         artifacts:
-            - bin/*
+          - bin/*
     - step: &build-app-raspbian
         name: Build Linux Raspberry
         image: golang:1.14
         script:
-          - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -v -o bin/message-server-raspberry -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git branch --show-current)'" .
+          - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -v -o bin/message-server-raspberry -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
         caches:
           - go
         artifacts:
-            - bin/*
+          - bin/*
+    - step: &build-docker-image
+        name: Build Docker Image
+        image: golang:1.14
+        script:
+          - echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}"  --password-stdin
+          - docker build -t "eldius/message-server:$( git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)"
+          - docker tag "eldius/message-server:$( git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)" "eldius/message-server:latest"
+          - docker push "eldius/message-server:$( git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)"
+          - docker push "eldius/message-server:latest"
+        caches:
+          - go
+        artifacts:
+          - bin/*
+        services:
+          - docker
     - step: &upload-files
         name: Save files
         script:
@@ -43,7 +58,7 @@ definitions:
             variables:
               BITBUCKET_USERNAME: $BITBUCKET_USERNAME
               BITBUCKET_APP_PASSWORD: $BITBUCKET_APP_PASSWORD
-              FILENAME: 'bin/*'
+              FILENAME: "bin/*"
 
   caches:
     go: $GOPATH/pkg
@@ -54,4 +69,5 @@ pipelines:
     - step: *lint-code
     - step: *build-app-linux-amd64
     - step: *build-app-raspbian
+    - step: *build-docker-image
     - step: *upload-files
