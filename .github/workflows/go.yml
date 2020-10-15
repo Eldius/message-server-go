@@ -1,0 +1,43 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.14
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+        if [ -f Gopkg.toml ]; then
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure
+        fi
+
+    - name: Test
+      run: go test -v -cover .
+
+    - name: Run golangci-lint
+      uses: golangci/golangci-lint-action@v1.2.1
+
+    - name: Build Linux x64
+      run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
+
+    - name: Build Raspberry
+      run: CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -v -o bin/message-server-raspberry -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
