@@ -59,4 +59,5 @@ jobs:
         push: true
         add_git_labels: true
         tag_with_sha: true
-        tags: eldius/message-server-go:latest
+        repository: eldius/message-server
+        tags: latest
