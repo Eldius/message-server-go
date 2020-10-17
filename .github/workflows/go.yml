@@ -66,6 +66,8 @@ jobs:
         tag_with_sha: true
         repository: eldius/message-server
         tags: latest
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
