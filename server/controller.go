@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"html/template"
 	"net/http"
 
 	"github.com/Eldius/jwt-auth-go/auth"
@@ -12,16 +11,6 @@ import (
 	"github.com/Eldius/message-server-go/messenger"
 	"github.com/Eldius/message-server-go/repository"
 )
-
-var temp = template.Must(template.ParseGlob("templates/*.html"))
-
-// IndexHandler is the handler for index path
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	if err := temp.ExecuteTemplate(w, "Index", nil); err != nil {
-		logger.Logger().Println(err.Error())
-		w.WriteHeader(500)
-	}
-}
 
 func MessageHandler(w http.ResponseWriter, r *http.Request) {
 	log := logger.Logger()

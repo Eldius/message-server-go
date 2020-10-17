@@ -12,22 +12,6 @@ clean_workspace() {
   rm -rf ./bin
 }
 
-build_app() {
-    if [ "${TEST}" -eq "1" ];then
-      echo "######################"
-      echo "# testing app code   #"
-      echo "######################"
-      go test ./... -cover -race \
-        || exit 1
-    fi
-
-    echo "######################"
-    echo "# building app       #"
-    echo "######################"
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" . \
-    || exit 1
-}
-
 build_image() {
   echo "##################"
   echo "# building image #"
@@ -63,6 +47,10 @@ start_container() {
       -p "8000:8000/udp" \
       -it \
       --name $CONTAINER_NAME \
+      -e "APP_DATABASE_ENGINE=sqlite3" \
+      -e "APP_DATABASE_URL=./app.db" \
+      -e "AUTH_DATABASE_ENGINE=sqlite3" \
+      -e "AUTH_DATABASE_URL=./auth.db" \
       --rm \
       -d \
       $DOCKER_OWNER/$DOCKER_REPO:$VERSION || \
@@ -123,7 +111,6 @@ done
 
 
 docker stop $CONTAINER_NAME
-build_app
 build_image
 test_image
 push_image

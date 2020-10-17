@@ -15,7 +15,6 @@ Routes creates the app router
 */
 func Routes() http.Handler {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", IndexHandler)
 	mux.HandleFunc("/login", auth.HandleLogin())
 
 	// Health check

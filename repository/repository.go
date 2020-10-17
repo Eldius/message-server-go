@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"log"
+
 	"github.com/Eldius/message-server-go/config"
 	"github.com/Eldius/message-server-go/messenger"
 	"github.com/jinzhu/gorm"
@@ -23,7 +25,8 @@ func GetDB() *gorm.DB {
 func initDB() *gorm.DB {
 	db, err := gorm.Open(config.GetDBEngine(), config.GetDBURL())
 	if err != nil {
-		panic("failed to connect database")
+		log.Printf("failed to connect database to app database\n- engine: %s\n- url: %s\n", config.GetDBEngine(), config.GetDBURL())
+		panic(err.Error())
 	}
 	if config.GetDBLogQueries() {
 		db.LogMode(true)
