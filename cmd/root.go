@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/Eldius/message-server-go/config"
+	authConfig "github.com/Eldius/jwt-auth-go/config"
 	"github.com/spf13/cobra"
 )
 
@@ -48,5 +49,7 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	authConfig.SetDefaults()
+	authConfig.BindEnvVars()
 	config.SetupViper(cfgFile)
 }

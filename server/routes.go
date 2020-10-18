@@ -7,6 +7,7 @@ import (
 	"github.com/Eldius/jwt-auth-go/auth"
 	"github.com/Eldius/message-server-go/config"
 	"github.com/Eldius/message-server-go/repository"
+	authRep "github.com/Eldius/jwt-auth-go/repository"
 	"github.com/Eldius/webapp-healthcheck-go/health"
 )
 
@@ -20,6 +21,7 @@ func Routes() http.Handler {
 	// Health check
 	mux.HandleFunc("/health", health.BuildChecker([]health.ServiceChecker{
 		health.NewDBChecker("main-db", repository.GetDB().DB(), time.Duration(2*time.Second)),
+		health.NewDBChecker("auth-db", authRep.GetDB().DB(), time.Duration(2*time.Second)),
 	}, map[string]string{
 		"app":         "message-server-go",
 		"version":     config.GetVersion(),
