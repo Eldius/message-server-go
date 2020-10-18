@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Eldius/message-server-go/config"
 	authConfig "github.com/Eldius/jwt-auth-go/config"
+	"github.com/Eldius/message-server-go/config"
 	"github.com/spf13/cobra"
 )
 

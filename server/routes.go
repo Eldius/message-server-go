@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/Eldius/jwt-auth-go/auth"
+	authRep "github.com/Eldius/jwt-auth-go/repository"
 	"github.com/Eldius/message-server-go/config"
 	"github.com/Eldius/message-server-go/repository"
-	authRep "github.com/Eldius/jwt-auth-go/repository"
 	"github.com/Eldius/webapp-healthcheck-go/health"
 )
 
