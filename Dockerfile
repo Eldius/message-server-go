@@ -7,13 +7,17 @@ RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linu
 
 FROM alpine:3.12
 
-RUN apk add sqlite
-
 WORKDIR /app
 
 COPY --from=builder /app/bin/message-server-linux-amd64 /app
-RUN mv /app/message-server-linux-amd64 /app/message-server
+RUN apk add --no-cache sqlite && \
+    addgroup -S messengergroup && \
+    adduser -S messenger -G messengergroup && \
+    mv /app/message-server-linux-amd64 /app/message-server && \
+    chown messenger. -R /app
 
 EXPOSE 8000
+
+USER messenger
 
 ENTRYPOINT [ "/app/message-server", "start" ]
