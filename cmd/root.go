@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	corsConfig "github.com/Eldius/cors-interceptor-go/config"
 	authConfig "github.com/Eldius/jwt-auth-go/config"
 	"github.com/Eldius/message-server-go/config"
 	"github.com/spf13/cobra"
@@ -51,5 +52,6 @@ func init() {
 func initConfig() {
 	authConfig.SetDefaults()
 	authConfig.BindEnvVars()
+	corsConfig.PrepareConfig()
 	config.SetupViper(cfgFile)
 }

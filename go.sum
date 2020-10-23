@@ -14,6 +14,8 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
+github.com/Eldius/cors-interceptor-go v0.0.0-20201019181935-17b9c1c4963a h1:WMSbrB19iksnNwtiTQnHaB84rGJz5JG4wZbBoH8Qo/w=
+github.com/Eldius/cors-interceptor-go v0.0.0-20201019181935-17b9c1c4963a/go.mod h1:5vl4JEsmzKY5OMEOj3t/cXLoNWJ6hwkcx7hQQV8sye0=
 github.com/Eldius/jwt-auth-go v0.0.0-20201015212645-24baae209910 h1:4z3z4F18Rott0QXgy5wt4VBtFdYsrcjfly5BKoUIhUY=
 github.com/Eldius/jwt-auth-go v0.0.0-20201015212645-24baae209910/go.mod h1:vLYYAcfo1am7gSCsB+atSn8hrFdXu8l+CwCJxta4l0k=
 github.com/Eldius/jwt-auth-go v0.0.0-20201018223138-e826204eaf47 h1:79a8VgwC9HSFnTXfn7qizkX4dduQUMrhFh9jqQY0rOw=
