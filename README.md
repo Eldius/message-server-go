@@ -1,6 +1,6 @@
 # message-server-go #
 
-![Go](https://github.com/Eldius/message-server-go/workflows/Go/badge.svg)
+![Go](https://github.com/eldius/message-server-go/workflows/Go/badge.svg)
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://bitbucket.org/Eldius/message-server-go)
 
 ## config ##
@@ -8,22 +8,19 @@
 ### env vars ###
 
 - app config:
-  - APP_LOG_FORMAT: log format, `text` for normal logs and anything else for JSON logs
-  - APP_DATABASE_URL: app database connection URL
-  - APP_DATABASE_ENGINE: app database engine (sqlite3 is the only one tested until now)
-  - APP_DATABASE_LOG: app log database queries (true|false)?
+  - MESSENGER_APP_LOG_FORMAT: log format, `text` for normal logs and anything else for JSON logs
+  - MESSENGER_APP_DATABASE_URL: app database connection URL
+  - MESSENGER_APP_DATABASE_ENGINE: app database engine (sqlite3 is the only one tested until now)
+  - MESSENGER_APP_DATABASE_LOG: app log database queries (true|false)?
 - authentication config:
-  - AUTH_DATABASE_URL: authentication database connection URL
-  - AUTH_DATABASE_ENGINE:authentication database engine (sqlite3 is the only one tested until now) 
-  - AUTH_DATABASE_LOG: authentication log database queries (true|false)?
-  - AUTH_USER_PATTERN: pattern for user validation
-  - AUTH_PASS_PATTERN: pattern for password validation
-  - AUTH_JWT_SECRET: secret used to sign JWT tokens
-  - AUTH_USER_DEFAULT_ACTIVE: default state for new users (true|false)
+  - MESSENGER_AUTH_USER_PATTERN: pattern for user validation
+  - MESSENGER_AUTH_PASS_PATTERN: pattern for password validation
+  - MESSENGER_AUTH_JWT_SECRET: secret used to sign JWT tokens
+  - MESSENGER_AUTH_USER_DEFAULT_ACTIVE: default state for new users (true|false)
 - CORS interceptor config:
-  - CORS_ALLOW_METHODS: HTTP request methods allowed
-  - CORS_ALLOW_HEADERS: HTTP headers allowed
-  - CORS_ALLOW_ORIGIN: origin domains allowed
+  - MESSENGER_CORS_ALLOW_METHODS: HTTP request methods allowed
+  - MESSENGER_CORS_ALLOW_HEADERS: HTTP headers allowed
+  - MESSENGER_CORS_ALLOW_ORIGIN: origin domains allowed
 
 ## dev ##
 
@@ -81,7 +78,7 @@ curl -i localhost:8000/admin -H "Authorization: Bearer header.payload.sign"
 ```
 
 ```shell
-curl -i localhost:8000/admin -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "eldius", "pass": "pass@1"}' 2>/dev/null | jq -r '. | .token' )" 2>/dev/null
+curl -i localhost:8000/admin -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "eldius", "pass": "MyStrongAdminPass@1"}' 2>/dev/null | jq -r '. | .token' )" 2>/dev/null
 ```
 
 ```shell

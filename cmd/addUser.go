@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	"github.com/Eldius/message-server-go/logger"
+	"github.com/eldius/message-server-go/logger"
+	"github.com/eldius/message-server-go/repository"
 
-	"github.com/Eldius/jwt-auth-go/repository"
-	"github.com/Eldius/jwt-auth-go/user"
+	authRepo "github.com/eldius/jwt-auth-go/repository"
+	"github.com/eldius/jwt-auth-go/user"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +19,8 @@ var addCmd = &cobra.Command{
 			logger.Logger().Println("admin?", userAddAdmin)
 			c.Admin = userAddAdmin
 			c.Name = userAddName
-			repository.SaveUser(&c)
+			repo := authRepo.NewRepositoryCustom(repository.GetDB())
+			repo.SaveUser(&c)
 			logger.Logger().Println("User succesfully saved.")
 		}
 	},

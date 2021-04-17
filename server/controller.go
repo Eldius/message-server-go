@@ -4,48 +4,50 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Eldius/jwt-auth-go/auth"
-	authRepo "github.com/Eldius/jwt-auth-go/repository"
-	"github.com/Eldius/jwt-auth-go/user"
-	"github.com/Eldius/message-server-go/logger"
-	"github.com/Eldius/message-server-go/messenger"
-	"github.com/Eldius/message-server-go/repository"
+	"github.com/eldius/jwt-auth-go/auth"
+	authRepo "github.com/eldius/jwt-auth-go/repository"
+	"github.com/eldius/jwt-auth-go/user"
+	"github.com/eldius/message-server-go/logger"
+	"github.com/eldius/message-server-go/messenger"
+	"github.com/eldius/message-server-go/repository"
 )
 
-func MessageHandler(w http.ResponseWriter, r *http.Request) {
-	log := logger.Logger()
-	if r.Method == http.MethodPost {
-		var mr *messenger.NewMessageRequest
-		if err := json.NewDecoder(r.Body).Decode(&mr); err != nil {
-			log.WithError(err).Error("FailedToSaveMessage")
-			return
-		}
-		from := auth.GetCurrentUser(r)
-		to := authRepo.FindUser(mr.To)
-		m := messenger.NewMessageWithMessage(from.ID, to.ID, mr.Message)
+func MessageHandler(svc *auth.AuthService, repo *authRepo.AuthRepository) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log := logger.Logger()
+		if r.Method == http.MethodPost {
+			var mr *messenger.NewMessageRequest
+			if err := json.NewDecoder(r.Body).Decode(&mr); err != nil {
+				log.WithError(err).Error("FailedToSaveMessage")
+				return
+			}
+			from := svc.GetCurrentUser(r)
+			to := repo.FindUser(mr.To)
+			m := messenger.NewMessageWithMessage(from.ID, to.ID, mr.Message)
 
-		w.WriteHeader(201)
-		repository.SaveMessage(m)
-	} else if r.Method == http.MethodGet {
-		w.Header().Add("Content-Type", "application/json")
-		u := auth.GetCurrentUser(r)
-		var msgs []messenger.MessageResponse
-		for _, m := range repository.FindMessageTo(u.ID) {
-			msgs = append(msgs, messenger.MessageResponse{
-				ID:          m.ID,
-				Destination: u.Name,
-				From:        parseMessageOrigin(m),
-				Message:     m.Message,
-				Sent:        m.Sent,
-			})
-		}
+			w.WriteHeader(201)
+			repository.SaveMessage(m)
+		} else if r.Method == http.MethodGet {
+			w.WriteHeader(405)
+			w.Header().Add("Content-Type", "application/json")
+			u := svc.GetCurrentUser(r)
+			var msgs []messenger.MessageResponse
+			for _, m := range repository.FindMessageTo(u.ID) {
+				msgs = append(msgs, messenger.MessageResponse{
+					ID:          m.ID,
+					Destination: u.Name,
+					From:        parseMessageOrigin(m, repo),
+					Message:     m.Message,
+					Sent:        m.Sent,
+				})
+			}
 
-		if err := json.NewEncoder(w).Encode(msgs); err != nil {
-			log.WithError(err).Error("FailedToFetchMessages")
-			return
+			if err := json.NewEncoder(w).Encode(msgs); err != nil {
+				log.WithError(err).Error("FailedToFetchMessages")
+				return
+			}
 		}
 	}
-	w.WriteHeader(405)
 }
 
 func AdminHandler(w http.ResponseWriter, r *http.Request) {
@@ -62,8 +64,8 @@ func AdminHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // TODO think about use a cache solution here
-func parseMessageOrigin(m messenger.Message) string {
-	fromUsr := authRepo.FindUserByID(m.From)
+func parseMessageOrigin(m messenger.Message, repo *authRepo.AuthRepository) string {
+	fromUsr := repo.FindUserByID(m.From)
 	if fromUsr != nil {
 		return fromUsr.Name
 	}

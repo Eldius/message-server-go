@@ -22,7 +22,7 @@ definitions:
         name: Build Linux x64
         image: golang:1.14
         script:
-          - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
+          - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
         caches:
           - go
         artifacts:
@@ -31,7 +31,7 @@ definitions:
         name: Build Linux Raspberry
         image: golang:1.14
         script:
-          - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -v -o bin/message-server-raspberry -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/Eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/Eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/Eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
+          - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -v -o bin/message-server-raspberry -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
         caches:
           - go
         artifacts:

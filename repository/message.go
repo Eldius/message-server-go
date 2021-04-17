@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/Eldius/message-server-go/logger"
-	"github.com/Eldius/message-server-go/messenger"
+	"github.com/eldius/message-server-go/logger"
+	"github.com/eldius/message-server-go/messenger"
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 )

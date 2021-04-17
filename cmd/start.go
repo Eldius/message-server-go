@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/Eldius/message-server-go/server"
+	"github.com/eldius/message-server-go/server"
 	"github.com/spf13/cobra"
 )
 

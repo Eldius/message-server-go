@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Eldius/cors-interceptor-go/cors"
-	"github.com/Eldius/message-server-go/logger"
+	"github.com/eldius/message-server-go/logger"
 )
 
 func Start(appPort int) {

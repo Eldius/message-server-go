@@ -3,8 +3,8 @@ package repository
 import (
 	"log"
 
-	"github.com/Eldius/message-server-go/config"
-	"github.com/Eldius/message-server-go/messenger"
+	"github.com/eldius/message-server-go/config"
+	"github.com/eldius/message-server-go/messenger"
 	"github.com/jinzhu/gorm"
 
 	// I need this

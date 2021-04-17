@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -14,13 +15,6 @@ func SetDefaults() {
 	viper.SetDefault("app.database.url", "app.db")
 	viper.SetDefault("app.database.engine", "sqlite3")
 	viper.SetDefault("app.log.format", "json")
-}
-
-func BindEnvVars() {
-	bindEnv("app.log.format", "APP_LOG_FORMAT")
-	bindEnv("app.database.url", "APP_DATABASE_URL")
-	bindEnv("app.database.engine", "APP_DATABASE_ENGINE")
-	bindEnv("app.database.log", "APP_DATABASE_LOG")
 }
 
 func SetupViper(cfgFile string) {
@@ -41,7 +35,8 @@ func SetupViper(cfgFile string) {
 		viper.SetConfigType("yml")
 	}
 	SetDefaults()
-	BindEnvVars()
+	viper.SetEnvPrefix("messenger")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
