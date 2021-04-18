@@ -38,10 +38,10 @@ jobs:
           version: v1.31
 
       - name: Build Linux x64
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o bin/message-server-linux-amd64 -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/eldius/message-server-go/config.branchName=$(git branch --show-current)'" .
 
       - name: Build Raspberry
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -v -o bin/message-server-raspberry -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/eldius/message-server-go/config.branchName=$(git rev-parse --abbrev-ref HEAD)'" .
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -v -o bin/message-server-raspberry -a -ldflags '-extldflags "-static"'  -ldflags "-X 'github.com/eldius/message-server-go/config.buildDate=$(date +"%Y-%m-%dT%H:%M:%S%:z")' -X 'github.com/eldius/message-server-go/config.version=$(git rev-parse --short HEAD)' -X 'github.com/eldius/message-server-go/config.branchName=$(git branch --show-current)'" .
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1

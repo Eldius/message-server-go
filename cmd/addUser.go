@@ -22,6 +22,8 @@ var addCmd = &cobra.Command{
 			repo := authRepo.NewRepositoryCustom(repository.GetDB())
 			repo.SaveUser(&c)
 			logger.Logger().Println("User succesfully saved.")
+		} else {
+			logger.Logger().WithError(err).Println("Failed to create user.")
 		}
 	},
 }

@@ -28,7 +28,7 @@ func MessageHandler(svc *auth.AuthService, repo *authRepo.AuthRepository) func(w
 			w.WriteHeader(201)
 			repository.SaveMessage(m)
 		} else if r.Method == http.MethodGet {
-			w.WriteHeader(405)
+			w.WriteHeader(200)
 			w.Header().Add("Content-Type", "application/json")
 			u := svc.GetCurrentUser(r)
 			var msgs []messenger.MessageResponse

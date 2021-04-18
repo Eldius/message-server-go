@@ -63,11 +63,11 @@ golangci-lint run && echo "" && go test ./... -coverprofile=coverage.out && echo
 ### some tests ###
 
 ```shell
-go run user add -u "eldius" -W "MyStrongPass@1" -a
+go run user add -u "eldius" -W "MyStrongAdminPass@1" -a
 ```
 
 ```shell
-curl -i localhost:8000/login -d '{"user": "eldius", "pass": "MyStrongPass@1"}'
+curl -i localhost:8000/login -d '{"user": "eldius", "pass": "MyStrongAdminPass@1"}'
 # returns something like this
 # {"token":"header.payload.sign"}
 ```
@@ -83,5 +83,21 @@ curl -i localhost:8000/admin -H "Authorization: Bearer $( curl --fail localhost:
 
 ```shell
 #send message
-curl -i -XPOST localhost:8000/message -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "user", "pass": "pass"}' 2>/dev/null | jq -r '. | .token' )" -d '{"to": "user1","msg": "My new message 01!"}' 2>/dev/null
+curl -i -XPOST localhost:8000/message -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "testUser", "pass": "MyStrongPass@1"}' 2>/dev/null | jq -r '. | .token' )" -d '{"to": "eldius","msg": "My new message 01!"}' 2>/dev/null
+```
+
+```shell
+#fetch messages
+curl -i -XGET localhost:8000/message -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "eldius", "pass": "MyStrongAdminPass@1"}' 2>/dev/null | jq -r '. | .token' )" 2>/dev/null
+```
+
+```shell
+curl -i -XPOST http://localhost:8000/user -H "Authorization: Bearer $( curl --fail localhost:8000/login -d '{"user": "eldius", "pass": "MyStrongAdminPass@1"}' 2>/dev/null | jq -r '. | .token' )" \
+-d '{
+  "user": "fulanus",
+  "pass": "pass",
+  "name": "Fulanus",
+  "active": true,
+  "admin": true
+}'
 ```
