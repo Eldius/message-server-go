@@ -14,7 +14,7 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Add a new user",
 	Long:  `Add a new user.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		if c, err := user.NewCredentials(userAddUser, userAddPass); err == nil {
 			logger.Logger().Println("admin?", userAddAdmin)
 			c.Admin = userAddAdmin
