@@ -8,6 +8,7 @@ import (
 	"github.com/eldius/jwt-auth-go/auth"
 	authRepo "github.com/eldius/jwt-auth-go/repository"
 	"github.com/eldius/message-server-go/config"
+	"github.com/eldius/message-server-go/logger"
 	"github.com/eldius/message-server-go/repository"
 )
 
@@ -15,6 +16,7 @@ import (
 Routes creates the app router
 */
 func Routes() http.Handler {
+	log := logger.Logger()
 	mux := http.NewServeMux()
 	db := repository.GetDB()
 	repo := authRepo.NewRepositoryCustom(db)
@@ -24,8 +26,13 @@ func Routes() http.Handler {
 	mux.Handle("/user", h.AuthInterceptor(h.HandleNewUser()))
 
 	// Health check
+	_db, err := db.DB()
+	if err != nil {
+		log.WithError(err).
+			Fatal("Routes")
+	}
 	mux.HandleFunc("/health", health.BuildChecker([]health.ServiceChecker{
-		health.NewDBCheckerCustomQuery("main-db", repository.GetDB().DB(), time.Duration(2*time.Second), "select 1"),
+		health.NewDBCheckerCustomQuery("main-db", _db, time.Duration(2*time.Second), "select 1"),
 	}, map[string]string{
 		"app":         "message-server-go",
 		"version":     config.GetVersion(),

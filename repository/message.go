@@ -4,7 +4,7 @@ import (
 	"github.com/eldius/message-server-go/logger"
 	"github.com/eldius/message-server-go/messenger"
 	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // SaveMessage saves the new user credential
