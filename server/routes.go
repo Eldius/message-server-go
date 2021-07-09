@@ -25,7 +25,7 @@ func Routes() http.Handler {
 
 	// Health check
 	mux.HandleFunc("/health", health.BuildChecker([]health.ServiceChecker{
-		health.NewDBChecker("main-db", repository.GetDB().DB(), time.Duration(2*time.Second)),
+		health.NewDBCheckerCustomQuery("main-db", repository.GetDB().DB(), time.Duration(2*time.Second), "select 1"),
 	}, map[string]string{
 		"app":         "message-server-go",
 		"version":     config.GetVersion(),
