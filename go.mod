@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/Eldius/cors-interceptor-go v0.0.0-20201019181935-17b9c1c4963a
 	github.com/Eldius/webapp-healthcheck-go v0.0.0-20201007021704-32f7a54f5c99
-	github.com/eldius/jwt-auth-go v0.0.6
+	github.com/eldius/jwt-auth-go v0.0.7
 	github.com/google/uuid v1.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/sirupsen/logrus v1.8.1
