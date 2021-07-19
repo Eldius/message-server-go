@@ -123,3 +123,6 @@ startdocker:
 		-m 32m \
 		--cpus=0.1 \
 		eldius/message-server-go:$(GIT_BRANCH)-$(GIT_COMMIT_HASH)
+
+startfront:
+	cd static ; yarn start
